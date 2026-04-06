@@ -22,14 +22,17 @@ export const generateNotes = async (payload) => {
     const result = await axios.post(
       `${serverUrl}/api/notes/generate-notes`,
       payload,
-      { withCredentials: true }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }
     );
 
-    return result.data; // ✅ always return clean data
-  } catch (error) {
-    console.log("GENERATE NOTES ERROR:", error.response?.data || error.message);
+    return result.data;
 
-    // 🔥 IMPORTANT: throw error so frontend catch works
+  } catch (error) {
+    console.log("ERROR:", error.response?.data);
     throw error;
   }
 };
